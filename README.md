@@ -22,11 +22,10 @@ Key components:
 
 ### Returns
 
-Given asset prices \( P_{i,t} \), log returns are computed as:
+Given asset prices P_{i,t}, log returns are computed as:
 
-\[
-r_{i,t} = \ln\left(\frac{P_{i,t}}{P_{i,t-1}}\right)
-\]
+r_{i,t} = ln(P_{i,t} / P_{i,t-1})
+
 
 Log returns are preferred due to their time-additivity and stability for statistical modeling.
 
@@ -34,33 +33,25 @@ Log returns are preferred due to their time-additivity and stability for statist
 
 ### Expected Returns and Covariance
 
-Using historical returns over a lookback window of length \( T \):
+Using historical returns over a lookback window of length T:
 
-\[
-\boldsymbol{\mu} = \mathbb{E}[r] \approx \frac{1}{T} \sum_{t=1}^{T} r_t
-\]
+μ = mean(r)
 
-\[
-\Sigma = \text{Cov}(r)
-\]
+Σ = cov(r)
 
 where:
-- \( \boldsymbol{\mu} \in \mathbb{R}^N \) is the vector of expected asset returns
-- \( \Sigma \in \mathbb{R}^{N \times N} \) is the covariance matrix
+- μ is an N-dimensional vector of expected asset returns
+- Σ is an N x N covariance matrix capturing asset variances and correlations
 
 ---
 
 ### Portfolio Return and Risk
 
-For portfolio weights \( \mathbf{w} \):
+For portfolio weights w:
 
-\[
-\mu_p = \mathbf{w}^\top \boldsymbol{\mu}
-\]
+μ_p = wᵀ μ
 
-\[
-\sigma_p = \sqrt{\mathbf{w}^\top \Sigma \mathbf{w}}
-\]
+σ_p = sqrt(wᵀ Σ w)
 
 ---
 
@@ -68,13 +59,7 @@ For portfolio weights \( \mathbf{w} \):
 
 The Sharpe ratio is defined as:
 
-\[
-\text{Sharpe}(\mathbf{w}) =
-\frac{\mu_p - r_f}{\sigma_p}
-=
-\frac{\mathbf{w}^\top \boldsymbol{\mu} - r_f}
-{\sqrt{\mathbf{w}^\top \Sigma \mathbf{w}}}
-\]
+Sharpe(w) = (μ_p − r_f) / σ_p
 
 where \( r_f \) is the risk-free rate.
 
@@ -84,16 +69,10 @@ where \( r_f \) is the risk-free rate.
 
 The optimizer solves:
 
-\[
-\max_{\mathbf{w}}
-\quad
-\frac{\mathbf{w}^\top \boldsymbol{\mu} - r_f}
-{\sqrt{\mathbf{w}^\top \Sigma \mathbf{w}}}
-\]
+maximize   (wᵀ μ − r_f) / sqrt(wᵀ Σ w)
 
-Subject to:
-- \( \sum_i w_i = 1 \) (fully invested)
-- \( w_i \ge 0 \) (no short selling)
+subject to sum(w) = 1
+           w_i ≥ 0
 
 This is a nonlinear constrained optimization problem solved numerically using Sequential Least Squares Programming (SLSQP).
 
@@ -104,7 +83,7 @@ This is a nonlinear constrained optimization problem solved numerically using Se
 To avoid look-ahead bias, the strategy is evaluated using a rolling framework:
 
 1. Select a historical lookback window (e.g. 252 trading days)
-2. Estimate \( \boldsymbol{\mu} \) and \( \Sigma \) using only past data
+2. Estimate μ and Σ using only past data
 3. Optimize portfolio weights to maximize Sharpe ratio
 4. Hold the portfolio for the next rebalance period (out-of-sample)
 5. Repeat through time
@@ -120,10 +99,10 @@ The optimized portfolio is compared against:
 - Buy-and-hold SPY
 
 Performance metrics:
-- Annualized return
-- Annualized volatility
-- Sharpe ratio
-- Maximum drawdown
+- Annual Return = 252 × mean(daily returns)
+- Annual Volatility = sqrt(252) × std(daily returns)
+- Sharpe Ratio = (Annual Return − r_f) / Annual Volatility
+- Max Drawdown = min(cumulative_return / rolling_max − 1)
 
 ---
 
