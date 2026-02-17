@@ -105,6 +105,3 @@ Performance metrics:
 - Max Drawdown = min(cumulative_return / rolling_max − 1)
 
 ---
-
-## Project Structure
-
