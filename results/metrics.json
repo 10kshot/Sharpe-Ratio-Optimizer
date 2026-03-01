@@ -1,0 +1,33 @@
+{
+  "metrics": {
+    "Sharpe Optimizer": {
+      "Ann Return": 0.18591,
+      "Ann Vol": 0.148566,
+      "Sharpe": 1.083092,
+      "Max Drawdown": -0.175176
+    },
+    "Equal Weight": {
+      "Ann Return": 0.153528,
+      "Ann Vol": 0.162047,
+      "Sharpe": 0.793149,
+      "Max Drawdown": -0.290432
+    },
+    "SPY Buy & Hold": {
+      "Ann Return": 0.138647,
+      "Ann Vol": 0.197053,
+      "Sharpe": 0.576734,
+      "Max Drawdown": -0.383591
+    }
+  },
+  "final_weights": {
+    "GLD": 0.4,
+    "JNJ": 0.321079,
+    "GOOGL": 0.131615,
+    "XOM": 0.047306,
+    "TLT": 0.02,
+    "JPM": 0.02,
+    "AAPL": 0.02,
+    "AMZN": 0.02,
+    "MSFT": 0.02
+  }
+}
