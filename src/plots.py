@@ -6,7 +6,7 @@ import matplotlib.gridspec as gridspec
 import pandas as pd
 import os
 
-# ── Theme constants ────────────────────────────────────────────────────────────
+# Theme
 BG    = "#161b22"
 DARK  = "#0d1117"
 TEXT  = "#c9d1d9"
@@ -129,7 +129,7 @@ def plot_results(
     print(f"  Chart saved → {output_path}")
 
 
-# ── Legacy helpers (kept for backward compatibility) ──────────────────────────
+# kept for backward compatibility
 def plot_equity_curves(curves, title="Out-of-Sample Performance", save_path=None):
     fig, ax = plt.subplots(figsize=(10, 5))
     fig.patch.set_facecolor(DARK)
