@@ -6,7 +6,7 @@ import matplotlib.gridspec as gridspec
 import pandas as pd
 import os
 
-# Theme
+# ── Theme constants ────────────────────────────────────────────────────────────
 BG    = "#161b22"
 DARK  = "#0d1117"
 TEXT  = "#c9d1d9"
@@ -21,6 +21,7 @@ BAR_PALETTE = [
     "#00d4aa", "#58a6ff", "#f0a500", "#e05c5c",
     "#a371f7", "#79c0ff", "#ffa657", "#7ee787", "#ff7b72",
 ]
+
 
 def _style_ax(ax, title=""):
     ax.set_facecolor(BG)
@@ -43,7 +44,7 @@ def plot_results(
 ):
     """
     Generate the full 4-panel results chart and save to output_path.
-    Panels: cumulative returns, drawdown, performance table, final weights bar
+    Panels: cumulative returns | drawdown | performance table | final weights bar
     """
     os.makedirs(os.path.dirname(output_path) if os.path.dirname(output_path) else ".", exist_ok=True)
 
@@ -128,7 +129,7 @@ def plot_results(
     print(f"  Chart saved → {output_path}")
 
 
-# kept for backward compatibility
+# ── Legacy helpers (kept for backward compatibility) ──────────────────────────
 def plot_equity_curves(curves, title="Out-of-Sample Performance", save_path=None):
     fig, ax = plt.subplots(figsize=(10, 5))
     fig.patch.set_facecolor(DARK)

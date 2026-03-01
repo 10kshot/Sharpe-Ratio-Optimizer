@@ -34,11 +34,27 @@ def sharpe_ratio(w: np.ndarray, mu: np.ndarray, sigma: np.ndarray, rf: float) ->
     return (portfolio_return(w, mu) - rf) / vol
 
 
-def maximize_sharpe(mu: np.ndarray, sigma: np.ndarray, rf: float = 0.0, no_short: bool = True):
+def maximize_sharpe(
+    mu: np.ndarray,
+    sigma: np.ndarray,
+    rf: float = 0.0,
+    no_short: bool = True,
+    min_w: float = 0.02,
+    max_w: float = 0.40,
+):
     """
     Maximize Sharpe ratio with constraints:
       sum(w) = 1
-      w_i >= 0 (if no_short)
+      min_w <= w_i <= max_w  (floor prevents degenerate single-asset solutions;
+                               cap limits concentration risk)
+
+    Args:
+        mu:       Expected daily returns (N,)
+        sigma:    Covariance matrix (N x N)
+        rf:       Daily risk-free rate
+        no_short: If False, removes lower bound (allows short positions)
+        min_w:    Minimum weight per asset (default 2%)
+        max_w:    Maximum weight per asset (default 40%)
     """
     n = len(mu)
     w0 = np.ones(n) / n

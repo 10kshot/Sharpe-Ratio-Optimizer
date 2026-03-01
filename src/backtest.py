@@ -19,7 +19,7 @@ def rolling_sharpe_backtest(
     lookback: int = 252,
     rebalance_freq: str = "M",
     rf_daily: float = 0.0,
-    min_2: float = 0.02,
+    min_w: float = 0.02,
     max_w: float = 0.40,
 ):
     """
@@ -47,7 +47,7 @@ def rolling_sharpe_backtest(
         train = returns.iloc[end_loc - lookback:end_loc]
         mu, sigma, _ = estimate_mu_sigma(train)
 
-        opt = maximize_sharpe(mu, sigma, rf=rf_daily, no_short=True)
+        opt = maximize_sharpe(mu, sigma, rf=rf_daily, no_short=True, min_w=min_w, max_w=max_w)
         w = opt["weights"]
 
         # Apply weights out-of-sample until next rebalance date
