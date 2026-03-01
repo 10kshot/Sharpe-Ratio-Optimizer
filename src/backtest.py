@@ -18,7 +18,9 @@ def rolling_sharpe_backtest(
     returns: pd.DataFrame,
     lookback: int = 252,
     rebalance_freq: str = "M",
-    rf_daily: float = 0.0
+    rf_daily: float = 0.0,
+    min_2: float = 0.02,
+    max_w: float = 0.40,
 ):
     """
     Rolling max-Sharpe portfolio (out-of-sample).
@@ -28,6 +30,10 @@ def rolling_sharpe_backtest(
     rebalance_freq: "M" monthly, "W" weekly, etc.
     rf_daily: daily risk-free rate (must match returns frequency)
     """
+    # Normalise rebalance_freq for pandas >= 2.2 ("M" → "ME")
+    _freq_map = {"M": "ME", "Q": "QE", "A": "YE", "Y": "YE"}
+    rebalance_freq = _freq_map.get(rebalance_freq, rebalance_freq)
+
     rebalance_dates = returns.resample(rebalance_freq).last().index
 
     portfolio_returns = []
