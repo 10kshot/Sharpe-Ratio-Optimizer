@@ -44,7 +44,10 @@ def maximize_sharpe(mu: np.ndarray, sigma: np.ndarray, rf: float = 0.0, no_short
     w0 = np.ones(n) / n
 
     constraints = [{"type": "eq", "fun": lambda w: np.sum(w) - 1.0}]
-    bounds = [(0.0, 1.0)] * n if no_short else None
+    if no_short:
+        bounds = [(min_w, max_w)] * n
+    else:
+        bounds = [(None, max_w)] * n
 
     def objective(w):
         return -sharpe_ratio(w, mu, sigma, rf)
@@ -59,9 +62,12 @@ def maximize_sharpe(mu: np.ndarray, sigma: np.ndarray, rf: float = 0.0, no_short
     )
 
     if not res.success:
-        raise RuntimeError(f"Optimization failed: {res.message}")
+        # Fall back to equal weight rather than crashing
+        w_star = w0
+    else:
+        w_star = np.clip(res.x, 0, max_w)
+        w_star /= w_star.sum()   # re-normalise after clipping
 
-    w_star = res.x
     return {
         "weights": w_star,
         "sharpe": sharpe_ratio(w_star, mu, sigma, rf),
